@@ -5,7 +5,7 @@ This pipeline was developed to map RNAseq data using the [STAR](https://www.ncbi
 **EDIT:** The Imperial HPC long nodes are no longer available. STAR is now more efficient to use as an array job. Please use the `starAlign.sh` script instead. The 15 samples listed in `00_File_List.txt` are a mix of paired and single end sequencing. You will need to change the values to define chromosomes if the number of samples change. 
 
 ### Usage
-Below is the help message from `Mapping.nf` including instructions on how to run the pipeline:
+Below is the help message from `STAR_Align.nf` including instructions on how to run the pipeline:
 ```
 Usage:
   This pipelines was developed to map RNA reads to a reference genome using the STAR 2-pass methodology.
