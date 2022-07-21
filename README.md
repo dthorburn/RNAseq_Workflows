@@ -2,6 +2,8 @@
 ## Overview
 This pipeline was developed to map RNAseq data using the [STAR](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3530905/) (Spliced Transcripts Alignment to a Reference) 2-pass methodology. This pipeline is paired with variant calling using GATK in the repository [dthorburn/Genomic_Read_Processing](https://github.com/dthorburn/Genomic_Read_Processing). The pipeline was developed using [Nextfow](https://www.nextflow.io/) version 22.04.4 (version on Imperial HPC; date: 19/07/2022). 
 
+**EDIT:** The Imperial HPC long nodes are no longer available. STAR is now more efficient to use as an array job. Please use the `starAlign.sh` script instead. The 15 samples listed in `00_File_List.txt` are a mix of paired and single end sequencing. You will need to change the values to define chromosomes if the number of samples change. 
+
 ### Usage
 Below is the help message from `Mapping.nf` including instructions on how to run the pipeline:
 ```
