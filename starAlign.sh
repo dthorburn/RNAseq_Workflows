@@ -13,11 +13,12 @@ module load samtools/1.2
 ##                        Paramaters                        ##
 ##                                                          ##
 ##############################################################
-PBS_ARRAY_INDEX=51 ##3,5,6,21,33,36,51
+
 NSlots=62
-Project_Dir=/rds/general/user/dthorbur/home/tmstorage/ephemeral/starAlign_PBSArray
-ref_genome=/rds/general/project/tmstorage/live/agamp4_ref_genome/VectorBase-54_AgambiaePEST_Genome.fasta
-ref_annots=/rds/general/project/tmstorage/live/agamp4_ref_genome/VectorBase-54_AgambiaePEST.gtf
+SE_Grep_Chars="SRR7" ## All SE files started with SRR7, so I used it for a grep command later. 
+Project_Dir=/path/to/project/dir
+ref_genome=/path/to/assembly.fasta
+ref_annots=//path/to/assembly.gtf
 
 ##############################################################
 ##                                                          ##
@@ -51,14 +52,11 @@ then
   exit 0
 fi
 
-## Just for the test. 
-## Chrom="AgamP4_Mt"
-
 Forward_File=`sed ${Sample_INDEX}"q;d" ${Project_Dir}/00_File_List.txt`
 SampleID=`basename ${Forward_File} | sed -e "s/_R1_001//" | sed -e "s/_1//" | sed -e "s/.fastq.gz//"`
 
-## Handling the different file types. 
-if echo $SampleID | grep -q "SRR7"
+## Handling the different file types. Single end files all started with SRR7 here, hence the ${SE_Grep_Chars} above.  
+if echo $SampleID | grep -q ${SE_Grep_Chars}
 then
   Reads=${Forward_File}
 else
