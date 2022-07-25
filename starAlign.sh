@@ -1,12 +1,29 @@
 #!/bin/sh
 #PBS -lwalltime=72:00:00
-#PBS -lselect=1:ncpus=32:mem=32gb
+#PBS -lselect=1:ncpus=64:mem=124gb
 #PBS -N StarAlign_Array
 #PBS -j oe
 #PBS -J 1-75
 
 module load star/2.7.1a
 module load samtools/1.2
+
+##############################################################
+##                                                          ##
+##                        Paramaters                        ##
+##                                                          ##
+##############################################################
+PBS_ARRAY_INDEX=51 ##3,5,6,21,33,36,51
+NSlots=62
+Project_Dir=/rds/general/user/dthorbur/home/tmstorage/ephemeral/starAlign_PBSArray
+ref_genome=/rds/general/project/tmstorage/live/agamp4_ref_genome/VectorBase-54_AgambiaePEST_Genome.fasta
+ref_annots=/rds/general/project/tmstorage/live/agamp4_ref_genome/VectorBase-54_AgambiaePEST.gtf
+
+##############################################################
+##                                                          ##
+##            Chromosome and Sample Distribution            ##
+##                                                          ##
+##############################################################
 
 if [ ${PBS_ARRAY_INDEX} -le 15 ]
 then
@@ -37,14 +54,8 @@ fi
 ## Just for the test. 
 ## Chrom="AgamP4_Mt"
 
-Project_Dir=/path/to/project/dir
-
-NSlots=30
-ref_genome=/path/to/assembly.fasta
-ref_annots=/path/to/assembly.gtf
-
 Forward_File=`sed ${Sample_INDEX}"q;d" ${Project_Dir}/00_File_List.txt`
-SampleID=`basename ${Forward_File} | sed -e "s/_R1_001.fastq.gz//" | sed -e "s/_1.fastq.gz//" `
+SampleID=`basename ${Forward_File} | sed -e "s/_R1_001//" | sed -e "s/_1//" | sed -e "s/.fastq.gz//"`
 
 ## Handling the different file types. 
 if echo $SampleID | grep -q "SRR7"
@@ -55,10 +66,17 @@ else
   Reads="${Forward_File} ${Reverse_File}"
 fi
 
+##############################################################
+##                                                          ##
+##                         Script                           ##
+##                                                          ##
+##############################################################
+
 ## Clunky as hell, but it works in an array like this. 
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Starting analysis of ${SampleID} on ${Chrom}; `date`"
 echo "Input Reads: ${Reads}"
+echo "Output Folder: ${Project_Dir}/02_Output_Bams"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 mkdir -p ${Project_Dir}/01_Working_Dir/STARref_${Chrom}_${SampleID}_Pass1
@@ -103,5 +121,8 @@ STAR --runThreadN ${NSlots} \
 samtools index *.bam
 rsync *.ba[mi] ${Project_Dir}/02_Output_Bams && echo "Finished tranferring files"
 
-rm -r ${Project_Dir}/01_Working_Dir/STARref_${Chrom}_${SampleID}_Pass1
-rm -r ${Project_Dir}/01_Working_Dir/STARref_${Chrom}_${SampleID}_Pass2
+if [ -f  "${Project_Dir}/02_Output_Bams/${SampleID}_${Chrom}_2pass.Aligned.sortedByCoord.out.bam" ]
+then
+  rm -r ${Project_Dir}/01_Working_Dir/STARref_${Chrom}_${SampleID}_Pass1
+  rm -r ${Project_Dir}/01_Working_Dir/STARref_${Chrom}_${SampleID}_Pass2
+fi
