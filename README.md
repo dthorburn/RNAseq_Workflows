@@ -52,4 +52,4 @@ Debugging arguments:
 ```
 # 2. New Tuxedo Protocol (HISAT, StringTie, and Ballgown)
 ## Overview
-This pipeline was developed to map RNAseq data using the "[new Tuxedo protocol](https://www.nature.com/articles/nprot.2016.095#Sec11)"(i.e., using [HISAT2](https://daehwankimlab.github.io/hisat2/), [StrinTie](https://ccb.jhu.edu/software/stringtie/), and [Ballgown](https://www.bioconductor.org/packages/devel/bioc/vignettes/ballgown/inst/doc/ballgown.html). This pipeline was developed using BASH, but on request I can update this to a nextflow workflow. 
+This pipeline was developed to map RNAseq data using the "[new Tuxedo protocol](https://www.nature.com/articles/nprot.2016.095#Sec11)" (i.e., using [HISAT2](https://daehwankimlab.github.io/hisat2/), [StringTie](https://ccb.jhu.edu/software/stringtie/), and [Ballgown](https://www.bioconductor.org/packages/devel/bioc/vignettes/ballgown/inst/doc/ballgown.html)). This pipeline was developed using BASH, but on request I can update this to a nextflow workflow. 
