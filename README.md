@@ -9,47 +9,6 @@ This pipeline was developed to map RNAseq data using the [STAR](https://www.ncbi
 
 Update the paths in `00_File_List.txt`, update the working directory path in `starAlign.sh`, alter the `PBS_ARRAY_INDEX` statements to handle the chromosomes and samples correctly, and submit using `qsub starAlign.sh`
 
-*Deprecated:* Below is the help message from `STAR_Align.nf` including instructions on how to run the pipeline:
-```
-Usage:
-  This pipelines was developed to map RNA reads to a reference genome using the STAR 2-pass methodology.
-
-To use, there are 3 steps:
-  1. Update project directory path in STAR_Align.sh
-  2. Add required arguments listed below
-  3. Submit pipeline coordinator using qsub STAR_Align.sh
-
-If you require available HPC jobs for alternative scripts lower job concurrency options.
-
-Required arguments:
-  --RefGen                                    Path to reference fasta. Usage: '--RefGen /path/to/genome.fasta'
-  --RefGTF                                      
-  --InDir                                     Path to input gzipped fastq directory. Required even if skipping pass 1.
-  --Mode                                      Paired-end or single-end input. Usage: '--Mode PE' or '--Mode SE'
-
-Optional arguments:
-  -w                                          Path to nextflow working directory. (Default: ./work)
-  --help                                      Show this message
-  --Chroms                                    User defined chromosome selection. (Default: all major LGs in AgamP4).
-                                              Usage: '--Chroms "AgamP4_3R,AgamP4_X,AgamP4_Mt'. Selection much be comma
-                                              delimited with no spaces and match the contig names in the fasta index.
-  --SP1_ref_args                              Optional arguments for STAR genomeGenerate
-  --SP1_aln_args                              Optional arguments for STAR mapping
-  --SP2_ref_args                              Optional arguments for STAR genomeGenerate pass 2
-  --SP2_aln_args                              Optional arguments for STAR mapping pass 2
-
-Concurrency options:                          Imperial HPC permits a maximum of 50 jobs per user. 
-  --SP1_Forks                                 Default: 15
-  --SP2_Forks                                 Default: 15
-
-Debugging arguments:
-  --Skip_STARPass1                            Skip STAR genomeGenerate and mapping pass 1
-  --Skip_STARPass2                            Skip STAR genomeGenerate and mapping pass 2
-  --SP1_threads                               Number of threads for each subprocess - swap BP for process any acronym to
-                                              alter other processes. (i.e., SP2_walltime = 24)
-  --SP1_memory                                Number of Gb of memory for each subprocess
-  --SP1_walltime                              Number of hours for each subprocess (72 is maximum)                            
-```
 # 2. New Tuxedo Protocol (HISAT, StringTie, and Ballgown)
 ## Overview
 This pipeline was developed to map RNAseq data using the "[new Tuxedo protocol](https://www.nature.com/articles/nprot.2016.095#Sec11)" (i.e., using [HISAT2](https://daehwankimlab.github.io/hisat2/), [StringTie](https://ccb.jhu.edu/software/stringtie/), and [Ballgown](https://www.bioconductor.org/packages/devel/bioc/vignettes/ballgown/inst/doc/ballgown.html)). This pipeline was developed using BASH, but on request I can update this to a nextflow workflow. 
